@@ -1,0 +1,9 @@
+com\gerenciador\DatabaseInitializer.class
+com\gerenciador\Database.class
+com\gerenciador\Main.class
+com\gerenciador\MenuConsole.class
+com\gerenciador\StatusTarefa.class
+com\gerenciador\Prioridade.class
+com\gerenciador\Tarefa.class
+com\gerenciador\GerenciadorDeTarefas.class
+com\gerenciador\TarefaDAO.class
