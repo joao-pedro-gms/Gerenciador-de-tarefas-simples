@@ -61,14 +61,22 @@ public class MenuConsole {
         System.out.print("Descrição da tarefa: ");
         String descricao = scanner.nextLine();
 
-        System.out.print("Prioridade (BAIXA, MEDIA, ALTA): ");
-        String prioridadeStr = scanner.nextLine().toUpperCase();
+        System.out.print("Prioridade (1- BAIXA, 2- MEDIA, 3- ALTA): ");
+        String prioridadeStr = scanner.nextLine();
         Prioridade prioridade;
-        try {
-            prioridade = Prioridade.valueOf(prioridadeStr);
-        } catch (Exception e) {
-            System.out.println("Prioridade inválida. Usando MEDIA.");
-            prioridade = Prioridade.MEDIA;
+        switch (prioridadeStr) {
+            case "1":
+                prioridade = Prioridade.BAIXA;
+                break;
+            case "2":
+                prioridade = Prioridade.MEDIA;
+                break;
+            case "3":
+                prioridade = Prioridade.ALTA;
+                break;
+            default:
+                System.out.println("Prioridade inválida. Usando MEDIA.");
+                prioridade = Prioridade.MEDIA;
         }
 
         gerenciadorDeTarefas.adicionarTarefa(titulo, descricao, prioridade);
