@@ -1,6 +1,9 @@
 package com.gerenciador;
 
 import java.util.List;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+
 
 public class GerenciadorDeTarefas {
 
@@ -27,6 +30,7 @@ public class GerenciadorDeTarefas {
         Tarefa tarefa = tarefaDAO.buscarPorId(id);
         if (tarefa != null) {
             tarefa.setStatus(StatusTarefa.CONCLUIDA);
+            tarefa.setDataConclusao(Timestamp.valueOf(LocalDateTime.now()));
             return tarefaDAO.atualizar(tarefa);
         }
         return false;
@@ -36,6 +40,7 @@ public class GerenciadorDeTarefas {
         Tarefa tarefa = tarefaDAO.buscarPorId(id);
         if (tarefa != null) {
             tarefa.setStatus(StatusTarefa.PENDENTE);
+            tarefa.setDataConclusao(null);
             return tarefaDAO.atualizar(tarefa);
         }
         return false;
@@ -46,6 +51,7 @@ public class GerenciadorDeTarefas {
     }
 
     public boolean atualizarTarefa(Tarefa tarefa) {
+        tarefa.setDataConclusao(null);
         return tarefaDAO.atualizar(tarefa);
     }
 

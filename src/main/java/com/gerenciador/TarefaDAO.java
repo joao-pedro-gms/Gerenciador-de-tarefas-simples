@@ -1,13 +1,14 @@
 package com.gerenciador;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class TarefaDAO {
 
     public void inserir(Tarefa tarefa) {
-        String sql = "INSERT INTO tarefas (titulo, descricao, prioridade, status) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO tarefas (titulo, descricao, prioridade, status, dataCriacao, dataConclusao) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = Database.connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -16,7 +17,8 @@ public class TarefaDAO {
             pstmt.setString(2, tarefa.getDescricao());
             pstmt.setString(3, tarefa.getPrioridade().name());
             pstmt.setString(4, tarefa.getStatus().name());
-
+            pstmt.setTimestamp(5, Timestamp.valueOf(LocalDateTime.now()));
+            pstmt.setTimestamp(6, tarefa.getDataConclusao());
             pstmt.executeUpdate();
 
         } catch (Exception e) {
@@ -39,6 +41,8 @@ public class TarefaDAO {
                     tarefa.setDescricao(rs.getString("descricao"));
                     tarefa.setPrioridade(Prioridade.valueOf(rs.getString("prioridade")));
                     tarefa.setStatus(StatusTarefa.valueOf(rs.getString("status")));
+                    tarefa.setDataCriacao(rs.getTimestamp("dataCriacao"));
+                    tarefa.setDataConclusao(rs.getTimestamp("dataConclusao"));
                     return tarefa;
                 }
             }
@@ -66,6 +70,8 @@ public class TarefaDAO {
                     tarefa.setDescricao(rs.getString("descricao"));
                     tarefa.setPrioridade(Prioridade.valueOf(rs.getString("prioridade")));
                     tarefa.setStatus(StatusTarefa.valueOf(rs.getString("status")));
+                    tarefa.setDataCriacao(rs.getTimestamp("dataCriacao"));
+                    tarefa.setDataConclusao(rs.getTimestamp("dataConclusao"));
                     lista.add(tarefa);
                 }
             }
@@ -78,7 +84,7 @@ public class TarefaDAO {
     }
 
     public boolean atualizar(Tarefa tarefa) {
-        String sql = "UPDATE tarefas SET titulo = ?, descricao = ?, prioridade = ?, status = ? WHERE id = ?";
+        String sql = "UPDATE tarefas SET titulo = ?, descricao = ?, prioridade = ?, status = ?, dataConclusao = ? WHERE id = ?";
 
         try (Connection conn = Database.connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -87,7 +93,8 @@ public class TarefaDAO {
             pstmt.setString(2, tarefa.getDescricao());
             pstmt.setString(3, tarefa.getPrioridade().name());
             pstmt.setString(4, tarefa.getStatus().name());
-            pstmt.setInt(5, tarefa.getId());
+            pstmt.setTimestamp(5, tarefa.getDataConclusao());
+            pstmt.setInt(6, tarefa.getId());
 
             return pstmt.executeUpdate() > 0;
 
@@ -127,6 +134,8 @@ public class TarefaDAO {
                 tarefa.setDescricao(rs.getString("descricao"));
                 tarefa.setPrioridade(Prioridade.valueOf(rs.getString("prioridade")));
                 tarefa.setStatus(StatusTarefa.valueOf(rs.getString("status")));
+                tarefa.setDataCriacao(rs.getTimestamp("dataCriacao"));
+                tarefa.setDataConclusao(rs.getTimestamp("dataConclusao"));
                 lista.add(tarefa);
             }
 

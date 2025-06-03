@@ -89,8 +89,8 @@ public class MenuConsole {
             System.out.println("Nenhuma tarefa encontrada.");
         } else {
             for (Tarefa t : tarefas) {
-                System.out.printf("ID: %d | Título: %s | Descrição: %s | Prioridade: %s | Status: %s\n",
-                        t.getId(), t.getTitulo(), t.getDescricao() ,t.getPrioridade(), t.getStatus());
+                System.out.printf("ID: %d | Título: %s | Descrição: %s | Prioridade: %s | Status: %s | Data de Criação: %s | Data de Conclusão: %s\n",
+                        t.getId(), t.getTitulo(), t.getDescricao() ,t.getPrioridade(), t.getStatus(), t.getDataCriacao(), t.getDataConclusao());
             }
         }
     }

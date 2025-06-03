@@ -10,7 +10,9 @@ public class DatabaseInitializer {
                 titulo TEXT NOT NULL,
                 descricao TEXT,
                 prioridade TEXT,
-                status TEXT
+                status TEXT,
+                dataCriacao TIMESTAMP,
+                dataConclusao TIMESTAMP
             );
         """;
 
