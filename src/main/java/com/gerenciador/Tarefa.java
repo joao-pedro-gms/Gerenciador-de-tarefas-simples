@@ -1,4 +1,5 @@
 package com.gerenciador;
+import java.sql.Timestamp;
 
 public class Tarefa {
 
@@ -7,7 +8,8 @@ public class Tarefa {
     private String descricao;
     private Prioridade prioridade;
     private StatusTarefa status;
-
+    private Timestamp dataCriacao;
+    private Timestamp dataConclusao;
     // Getter e Setter para 'id'
     public int getId() {
         return id;
@@ -51,5 +53,21 @@ public class Tarefa {
 
     public void setStatus(StatusTarefa status) {
         this.status = status;
+    }
+
+    public Timestamp getDataCriacao() {
+        return dataCriacao;
+    }
+
+    public void setDataCriacao(Timestamp dataCriacao) {
+        this.dataCriacao = dataCriacao;
+    }
+
+    public Timestamp getDataConclusao() {
+        return dataConclusao;
+    }
+
+    public void setDataConclusao(Timestamp dataConclusao) {
+        this.dataConclusao = dataConclusao;
     }
 }
