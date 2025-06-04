@@ -1,5 +1,6 @@
 package com.gerenciador;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Scanner;
 
@@ -21,49 +22,23 @@ public class MenuConsole {
         System.out.println("5. Marcar tarefa como pendente");
         System.out.println("6. Atualizar tarefa");
         System.out.println("7. Remover tarefa");
+        System.out.println("8. Listar todas as tarefas com filtro (mês e ano)");
         System.out.println("0. Sair");
         System.out.print("Escolha uma opção: ");
     }
 
     public void processarOpcaoDoUsuario(int opcao) {
         switch (opcao) {
-            case 1: 
-                System.out.print("\033\143");
-                cadastrarTarefa();
-                break;
-            case 2: 
-                System.out.print("\033\143");
-                listarTarefas(StatusTarefa.PENDENTE);
-                break;
-            case 3:
-                System.out.print("\033\143");
-                listarTarefas(StatusTarefa.CONCLUIDA);
-                break;
-            case 4:
-                System.out.print("\033\143");
-                listarTarefas(StatusTarefa.PENDENTE);
-                marcarTarefaComoConcluida();
-                break;
-            case 5: 
-                System.out.print("\033\143");
-                listarTarefas(StatusTarefa.CONCLUIDA);
-                marcarTarefaComoPendente();
-                break;
-            case 6: 
-                System.out.print("\033\143");
-                listarTarefas(StatusTarefa.PENDENTE);
-                atualizarTarefa();
-                break;
-            case 7: 
-                System.out.print("\033\143");
-                listarTarefas(StatusTarefa.PENDENTE);
-                removerTarefa();
-                break;
-            case 0: 
-                System.out.print("\033\143");
-                System.out.println("Saindo do sistema. Até logo!");
-                break;
-            default: System.out.println("Opção inválida. Tente novamente.");
+            case 1 -> cadastrarTarefa();
+            case 2 -> listarTarefas(StatusTarefa.PENDENTE);
+            case 3 -> listarTarefas(StatusTarefa.CONCLUIDA);
+            case 4 -> marcarTarefaComoConcluida();
+            case 5 -> marcarTarefaComoPendente();
+            case 6 -> atualizarTarefa();
+            case 7 -> removerTarefa();
+            case 8 -> listarTodasTarefasComFiltro();
+            case 0 -> System.out.println("Saindo do sistema. Até logo!");
+            default -> System.out.println("Opção inválida. Tente novamente.");
         }
     }
 
@@ -112,6 +87,7 @@ public class MenuConsole {
     }
 
     private void listarTarefas(StatusTarefa status) {
+         limparTela();
         List<Tarefa> tarefas = gerenciadorDeTarefas.listarTarefas(status);
         if (tarefas.isEmpty()) {
             System.out.println("Nenhuma tarefa encontrada.");
@@ -123,9 +99,52 @@ public class MenuConsole {
         }
     }
 
+    private void listarTodasTarefasComFiltro() {
+        limparTela();
+    System.out.print("Digite o mês (1-12): ");
+    int mes = lerId();
+
+    System.out.print("Digite o ano (ex: 2025): ");
+    int ano = lerId();
+
+    List<Tarefa> tarefas = gerenciadorDeTarefas.listarTodasTarefas();
+    boolean encontrou = false;
+    for (Tarefa t : tarefas) {
+        LocalDateTime dataCriacao = t.getDataCriacao().toLocalDateTime();
+        if (dataCriacao.getMonthValue() == mes && dataCriacao.getYear() == ano) {
+            System.out.printf("ID: %d | Título: %s | Descrição: %s | Prioridade: %s | Status: %s | Data de Criação: %s | Data de Conclusão: %s\n",
+                    t.getId(), t.getTitulo(), t.getDescricao(), t.getPrioridade(), t.getStatus(), t.getDataCriacao(), t.getDataConclusao());
+            encontrou = true;
+        }
+    }
+       if (!encontrou) {
+        System.out.println("Nenhuma tarefa encontrada para esse filtro.");
+       }
+   }
+
     private void marcarTarefaComoConcluida() {
-        System.out.print("ID da tarefa a ser marcada como concluída: ");
-        int id = lerId();
+                 limparTela();
+       List<Tarefa> tarefas = gerenciadorDeTarefas.listarTarefas(StatusTarefa.PENDENTE);
+
+       if (tarefas.isEmpty()) {
+         System.out.println("Nenhuma tarefa pendente para concluir.");
+         return;
+       }
+
+     System.out.println("Tarefas pendentes:");
+     for (Tarefa t : tarefas) {
+         System.out.printf("ID: %d | Título: %s | Descrição: %s | Prioridade: %s | Status: %s | Data de Criação: %s | Data de Conclusão: %s\n",
+                t.getId(), t.getTitulo(), t.getDescricao(), t.getPrioridade(), t.getStatus(), t.getDataCriacao(), t.getDataConclusao());
+     }
+
+     System.out.println("Digite o ID da tarefa que deseja concluir ou 0 para cancelar:");
+     int id = lerId();
+
+     if (id == 0) {
+        System.out.println("Concluir tarefa pendente cancelada.");
+        return;
+     }
+
         if (gerenciadorDeTarefas.marcarTarefaComoConcluida(id)) {
             System.out.println("Tarefa marcada como concluída.");
         } else {
@@ -178,14 +197,36 @@ public class MenuConsole {
         }
     }
 
+
     private void removerTarefa() {
-        System.out.print("ID da tarefa a ser removida: ");
-        int id = lerId();
-        if (gerenciadorDeTarefas.removerTarefa(id)) {
-            System.out.println("Tarefa removida com sucesso!");
-        } else {
-            System.out.println("Tarefa não encontrada.");
-        }
+         limparTela();
+       List<Tarefa> tarefas = gerenciadorDeTarefas.listarTarefas(StatusTarefa.PENDENTE);
+
+       if (tarefas.isEmpty()) {
+         System.out.println("Nenhuma tarefa pendente para remover.");
+         return;
+       }
+
+     System.out.println("Tarefas pendentes:");
+     for (Tarefa t : tarefas) {
+         System.out.printf("ID: %d | Título: %s | Descrição: %s | Prioridade: %s | Status: %s | Data de Criação: %s | Data de Conclusão: %s\n",
+                t.getId(), t.getTitulo(), t.getDescricao(), t.getPrioridade(), t.getStatus(), t.getDataCriacao(), t.getDataConclusao());
+     }
+
+     System.out.println("Digite o ID da tarefa que deseja remover ou 0 para cancelar:");
+     int id = lerId();
+
+     if (id == 0) {
+        System.out.println("Remoção cancelada.");
+        return;
+     }
+
+     if (gerenciadorDeTarefas.removerTarefa(id)) {
+        System.out.println("Tarefa removida com sucesso!");
+     } else {
+        System.out.println("Tarefa não encontrada.");
+     }
+
     }
 
     private int lerId() {
@@ -196,4 +237,9 @@ public class MenuConsole {
             return -1;
         }
     }
+
+    private void limparTela() {
+        for (int i = 0; i < 50; ++i) System.out.println();
+    }
+
 }

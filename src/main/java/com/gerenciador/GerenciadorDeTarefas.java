@@ -26,6 +26,10 @@ public class GerenciadorDeTarefas {
         return tarefaDAO.buscarPorStatus(status);
     }
 
+    public List<Tarefa> listarTodasTarefas() {
+        return tarefaDAO.listarTodas();
+    }
+
     public boolean marcarTarefaComoConcluida(int id) {
         Tarefa tarefa = tarefaDAO.buscarPorId(id);
         if (tarefa != null) {
