@@ -27,15 +27,43 @@ public class MenuConsole {
 
     public void processarOpcaoDoUsuario(int opcao) {
         switch (opcao) {
-            case 1 -> cadastrarTarefa();
-            case 2 -> listarTarefas(StatusTarefa.PENDENTE);
-            case 3 -> listarTarefas(StatusTarefa.CONCLUIDA);
-            case 4 -> marcarTarefaComoConcluida();
-            case 5 -> marcarTarefaComoPendente();
-            case 6 -> atualizarTarefa();
-            case 7 -> removerTarefa();
-            case 0 -> System.out.println("Saindo do sistema. Até logo!");
-            default -> System.out.println("Opção inválida. Tente novamente.");
+            case 1: 
+                System.out.print("\033\143");
+                cadastrarTarefa();
+                break;
+            case 2: 
+                System.out.print("\033\143");
+                listarTarefas(StatusTarefa.PENDENTE);
+                break;
+            case 3:
+                System.out.print("\033\143");
+                listarTarefas(StatusTarefa.CONCLUIDA);
+                break;
+            case 4:
+                System.out.print("\033\143");
+                listarTarefas(StatusTarefa.PENDENTE);
+                marcarTarefaComoConcluida();
+                break;
+            case 5: 
+                System.out.print("\033\143");
+                listarTarefas(StatusTarefa.CONCLUIDA);
+                marcarTarefaComoPendente();
+                break;
+            case 6: 
+                System.out.print("\033\143");
+                listarTarefas(StatusTarefa.PENDENTE);
+                atualizarTarefa();
+                break;
+            case 7: 
+                System.out.print("\033\143");
+                listarTarefas(StatusTarefa.PENDENTE);
+                removerTarefa();
+                break;
+            case 0: 
+                System.out.print("\033\143");
+                System.out.println("Saindo do sistema. Até logo!");
+                break;
+            default: System.out.println("Opção inválida. Tente novamente.");
         }
     }
 
